@@ -11,7 +11,7 @@ For simplicity, this service does not support overdrafts. The smallest possible 
 ---
 ## Usage
 
-//TODO: Add postman requests
+The application can be run using Spring Boot. It can be tested using the example curl comments, or the attached postman requests [here](https://www.getpostman.com/collections/6369ea96c905cb4d58ca).
 
 ### Accounts
 
