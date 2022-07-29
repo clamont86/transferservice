@@ -69,7 +69,7 @@ public class AccountControllerTest {
     public void test_accountController_findByAccountNumber_whenAccountNotFound() {
         RuntimeException thrownException = assertThrows(RuntimeException.class ,() -> controller.findByAccountNumber(UNKNOWN_ACCOUNT_NUMBER));
 
-        assertEquals("Account not found", thrownException.getMessage());
+        assertEquals("No account found with accountNumber: 99999999", thrownException.getMessage());
     }
 
     @Test
@@ -106,7 +106,7 @@ public class AccountControllerTest {
     public void test_accountController_updateBalance_whenAccountNotFound() {
         RuntimeException thrownException = assertThrows(RuntimeException.class ,() -> controller.updateBalance(ACCOUNT_1, UNKNOWN_ACCOUNT_NUMBER));
 
-        assertEquals("Account not found", thrownException.getMessage());
+        assertEquals("No account found with accountNumber: 99999999", thrownException.getMessage());
         verify(accountRepository, times(0)).save(any(Account.class));
     }
 

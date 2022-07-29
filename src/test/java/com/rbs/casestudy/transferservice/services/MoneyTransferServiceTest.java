@@ -1,5 +1,6 @@
 package com.rbs.casestudy.transferservice.services;
 
+import com.rbs.casestudy.transferservice.exceptions.AccountNotFoundException;
 import com.rbs.casestudy.transferservice.models.Account;
 import com.rbs.casestudy.transferservice.models.Transaction;
 import com.rbs.casestudy.transferservice.models.TransferResponse;
@@ -86,7 +87,7 @@ public class MoneyTransferServiceTest {
     @Test
     public void test_transferMoneyService_perform_sourceAccountNotFound() {
         transaction.setSourceAccountNumber(UNRECOGNISED_ACCOUNT_NUMBER);
-        RuntimeException thrownException = assertThrows(RuntimeException.class, () -> service.performTransaction(transaction));
+        AccountNotFoundException thrownException = assertThrows(AccountNotFoundException.class, () -> service.performTransaction(transaction));
 
         assertAll("repository calls",
                 () -> verify(accountRepository, times(1)).findById(UNRECOGNISED_ACCOUNT_NUMBER),
@@ -94,13 +95,13 @@ public class MoneyTransferServiceTest {
                 () -> verify(accountRepository, times(0)).saveAll(any(List.class))
         );
 
-        assertEquals("not found", thrownException.getMessage());
+        assertEquals("Source account not found with accountNumber: 2", thrownException.getMessage());
     }
 
     @Test
     public void test_transferMoneyService_perform_destinationAccountNotFound() {
         transaction.setDestinationAccountNumber(UNRECOGNISED_ACCOUNT_NUMBER);
-        RuntimeException thrownException = assertThrows(RuntimeException.class, () -> service.performTransaction(transaction));
+        AccountNotFoundException thrownException = assertThrows(AccountNotFoundException.class, () -> service.performTransaction(transaction));
 
         assertAll("repository calls",
                 () -> verify(accountRepository, times(1)).findById(SOURCE_ACCOUNT_NUMBER),
@@ -108,6 +109,6 @@ public class MoneyTransferServiceTest {
                 () -> verify(accountRepository, times(0)).saveAll(any(List.class))
         );
 
-        assertEquals("not found", thrownException.getMessage());
+        assertEquals("Destination account not found with accountNumber: 2", thrownException.getMessage());
     }
 }

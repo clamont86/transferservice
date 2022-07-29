@@ -1,5 +1,6 @@
 package com.rbs.casestudy.transferservice.service;
 
+import com.rbs.casestudy.transferservice.exceptions.AccountNotFoundException;
 import com.rbs.casestudy.transferservice.models.Account;
 import com.rbs.casestudy.transferservice.models.Transaction;
 import com.rbs.casestudy.transferservice.models.TransferResponse;
@@ -12,12 +13,14 @@ import java.util.Arrays;
 @Service
 public class MoneyTransferService {
 
+    private static final String SOURCE_FIELD = "Source";
+    private static final String DESTINATION_FIELD = "Destination";
     @Autowired
     private AccountRepository accountRepository;
 
     public TransferResponse performTransaction(Transaction transaction) {
-        Account sourceAccount = findAccount(transaction.getSourceAccountNumber());
-        Account destinationAccount = findAccount(transaction.getDestinationAccountNumber());
+        Account sourceAccount = findAccount(transaction.getSourceAccountNumber(), SOURCE_FIELD);
+        Account destinationAccount = findAccount(transaction.getDestinationAccountNumber(), DESTINATION_FIELD);
 
         // TODO: Check enough funds are present
 
@@ -32,9 +35,9 @@ public class MoneyTransferService {
         return transferResponse;
     }
 
-    private Account findAccount(Long accountNumber) {
+    private Account findAccount(Long accountNumber, String field) {
         return accountRepository.findById(accountNumber).orElseThrow(
-                () -> new RuntimeException("not found") //TODO: new exception
+                () -> new AccountNotFoundException(accountNumber, field)
         );
     }
 }
