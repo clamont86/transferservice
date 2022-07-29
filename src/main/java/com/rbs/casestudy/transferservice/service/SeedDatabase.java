@@ -1,7 +1,9 @@
 package com.rbs.casestudy.transferservice.service;
 
 import com.rbs.casestudy.transferservice.models.Account;
+import com.rbs.casestudy.transferservice.models.Transaction;
 import com.rbs.casestudy.transferservice.repositories.AccountRepository;
+import com.rbs.casestudy.transferservice.repositories.TransactionRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +14,7 @@ import java.math.BigDecimal;
 public class SeedDatabase {
 
     @Bean
-    public CommandLineRunner initialiseDatabase(AccountRepository accountRepository) {
+    public CommandLineRunner initialiseDatabase(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         return args -> {
             accountRepository.save(new Account(11111111L, new BigDecimal("1000.00")));
             accountRepository.save(new Account(22222222L, new BigDecimal("123.45")));

@@ -22,7 +22,6 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class AccountControllerTest {
 
-
     private static final long ACCOUNT_NUMBER_1 = 11111111L;
     private static final BigDecimal BALANCE_1 = new BigDecimal("1234.56");
     private static final long ACCOUNT_NUMBER_2 = 22222222L;
