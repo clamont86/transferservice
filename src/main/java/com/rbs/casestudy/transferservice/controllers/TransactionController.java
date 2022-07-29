@@ -26,17 +26,17 @@ public class TransactionController {
     }
 
     @GetMapping("/transactions/sourceAccountNumber/{sourceAccountNumber}")
-    public List<Transaction> findAllBySourceAccountNumber(@PathVariable Long sourceAccountNumber) { //TODO: validate
+    public List<Transaction> findAllBySourceAccountNumber(@PathVariable Long sourceAccountNumber) {
         return transactionRepository.findAllBySourceAccountNumber(sourceAccountNumber);
     }
 
     @GetMapping("/transactions/destinationAccountNumber/{destinationAccountNumber}")
-    public List<Transaction> findAllByDestinationAccountNumber(@PathVariable Long destinationAccountNumber) { //TODO: validate
+    public List<Transaction> findAllByDestinationAccountNumber(@PathVariable Long destinationAccountNumber) {
         return transactionRepository.findAllByDestinationAccountNumber(destinationAccountNumber);
     }
 
     @PostMapping("/transactions")
-    public TransferResponse performTransaction(@RequestBody @Valid Transaction transaction) { //TODO: validate
+    public TransferResponse performTransaction(@RequestBody @Valid Transaction transaction) {
         TransferResponse response = moneyTransferService.performTransaction(transaction);
         Transaction persistedTransaction = transactionRepository.save(transaction);
         response.setTransactionId(persistedTransaction.getId());
