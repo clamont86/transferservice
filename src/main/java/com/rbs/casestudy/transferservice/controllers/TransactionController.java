@@ -6,6 +6,7 @@ import com.rbs.casestudy.transferservice.repositories.TransactionRepository;
 import com.rbs.casestudy.transferservice.service.MoneyTransferService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,7 +36,7 @@ public class TransactionController {
     }
 
     @PostMapping("/transactions")
-    public TransferResponse performTransaction(@RequestBody Transaction transaction) { //TODO: validate
+    public TransferResponse performTransaction(@RequestBody @Valid Transaction transaction) { //TODO: validate
         TransferResponse response = moneyTransferService.performTransaction(transaction);
         Transaction persistedTransaction = transactionRepository.save(transaction);
         response.setTransactionId(persistedTransaction.getId());

@@ -1,6 +1,7 @@
 package com.rbs.casestudy.transferservice.services;
 
 import com.rbs.casestudy.transferservice.exceptions.AccountNotFoundException;
+import com.rbs.casestudy.transferservice.exceptions.InsufficientFundsException;
 import com.rbs.casestudy.transferservice.models.Account;
 import com.rbs.casestudy.transferservice.models.Transaction;
 import com.rbs.casestudy.transferservice.models.TransferResponse;
@@ -59,7 +60,7 @@ public class MoneyTransferServiceTest {
     }
 
     @Test
-    public void test_transferMoneyService_perform_happyPath() {
+    public void test_moneyTransferService_perform_happyPath() {
         TransferResponse response = service.performTransaction(transaction);
 
         assertAll("repository calls",
@@ -85,7 +86,7 @@ public class MoneyTransferServiceTest {
 
 
     @Test
-    public void test_transferMoneyService_perform_sourceAccountNotFound() {
+    public void test_moneyTransferService_perform_sourceAccountNotFound() {
         transaction.setSourceAccountNumber(UNRECOGNISED_ACCOUNT_NUMBER);
         AccountNotFoundException thrownException = assertThrows(AccountNotFoundException.class, () -> service.performTransaction(transaction));
 
@@ -99,7 +100,7 @@ public class MoneyTransferServiceTest {
     }
 
     @Test
-    public void test_transferMoneyService_perform_destinationAccountNotFound() {
+    public void test_moneyTransferService_perform_destinationAccountNotFound() {
         transaction.setDestinationAccountNumber(UNRECOGNISED_ACCOUNT_NUMBER);
         AccountNotFoundException thrownException = assertThrows(AccountNotFoundException.class, () -> service.performTransaction(transaction));
 
@@ -110,5 +111,19 @@ public class MoneyTransferServiceTest {
         );
 
         assertEquals("Destination account not found with accountNumber: 2", thrownException.getMessage());
+    }
+
+    @Test
+    public void test_moneyTransferService_perform_insufficientFundsInAccount() {
+        transaction.setAmount(new BigDecimal("200.01"));
+        InsufficientFundsException thrownException = assertThrows(InsufficientFundsException.class, () -> service.performTransaction(transaction));
+
+        assertAll("repository calls",
+                () -> verify(accountRepository, times(1)).findById(SOURCE_ACCOUNT_NUMBER),
+                () -> verify(accountRepository, times(1)).findById(DESTINATION_ACCOUNT_NUMBER),
+                () -> verify(accountRepository, times(0)).saveAll(any(List.class))
+        );
+
+        assertEquals("Insufficient Funds in account number: 11111111. Current balance: £200.00, Requested Transfer: £200.01", thrownException.getMessage());
     }
 }

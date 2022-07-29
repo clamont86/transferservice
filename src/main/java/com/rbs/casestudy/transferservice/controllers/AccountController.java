@@ -5,6 +5,7 @@ import com.rbs.casestudy.transferservice.models.Account;
 import com.rbs.casestudy.transferservice.repositories.AccountRepository;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,14 +30,14 @@ public class AccountController {
     }
 
     @PostMapping("/accounts")
-    public Account addNewAccount(@RequestBody Account account) { //TODO: Validate
+    public Account addNewAccount(@RequestBody @Valid Account account) {
         return accountRepository.save(account);
     }
 
     @PutMapping("/accounts/{accountNumber}")
-    public Account updateBalance(@RequestBody Account account, @PathVariable Long accountNumber) { //TODO: valid
+    public Account updateBalance(@RequestBody @Valid Account account, @PathVariable Long accountNumber) {
         Account retrievedAccount = accountRepository.findById(accountNumber)
-                .orElseThrow(() -> new AccountNotFoundException(accountNumber)); //TODO: create unique exception
+                .orElseThrow(() -> new AccountNotFoundException(accountNumber));
         retrievedAccount.setBalance(account.getBalance());
         try {
             return accountRepository.save(account);

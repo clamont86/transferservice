@@ -6,6 +6,8 @@ This is an example REST API for transferring money between various accounts. It 
  * H2 (for an in-memory database)
  * JPA (for the RESTFful service)
 
+For simplicity, this service does not support overdrafts. The smallest possible transaction is £1.
+
 ---
 ## Usage
 

@@ -1,6 +1,7 @@
 package com.rbs.casestudy.transferservice.service;
 
 import com.rbs.casestudy.transferservice.exceptions.AccountNotFoundException;
+import com.rbs.casestudy.transferservice.exceptions.InsufficientFundsException;
 import com.rbs.casestudy.transferservice.models.Account;
 import com.rbs.casestudy.transferservice.models.Transaction;
 import com.rbs.casestudy.transferservice.models.TransferResponse;
@@ -8,6 +9,7 @@ import com.rbs.casestudy.transferservice.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 @Service
@@ -22,7 +24,9 @@ public class MoneyTransferService {
         Account sourceAccount = findAccount(transaction.getSourceAccountNumber(), SOURCE_FIELD);
         Account destinationAccount = findAccount(transaction.getDestinationAccountNumber(), DESTINATION_FIELD);
 
-        // TODO: Check enough funds are present
+        if (isInsufficientFundsInSourceAccount(sourceAccount.getBalance(), transaction.getAmount())) {
+            throw new InsufficientFundsException(sourceAccount.getAccountNumber(), transaction.getAmount(), sourceAccount.getBalance());
+        }
 
         sourceAccount.setBalance(sourceAccount.getBalance().subtract(transaction.getAmount()));
         destinationAccount.setBalance(destinationAccount.getBalance().add(transaction.getAmount()));
@@ -39,5 +43,9 @@ public class MoneyTransferService {
         return accountRepository.findById(accountNumber).orElseThrow(
                 () -> new AccountNotFoundException(accountNumber, field)
         );
+    }
+
+    private boolean isInsufficientFundsInSourceAccount(BigDecimal balance, BigDecimal amount) {
+        return balance.compareTo(amount) < 0;
     }
 }

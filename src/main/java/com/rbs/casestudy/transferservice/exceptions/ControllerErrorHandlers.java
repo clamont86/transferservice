@@ -14,4 +14,11 @@ public class ControllerErrorHandlers {
     public String accountNotFoundHandler(AccountNotFoundException ex) {
         return ex.getMessage();
     }
+
+    @ResponseBody
+    @ExceptionHandler(InsufficientFundsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String insufficientFundsHandler(InsufficientFundsException ex) {
+        return ex.getMessage();
+    }
 }
