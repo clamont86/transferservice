@@ -1,7 +1,9 @@
 package com.rbs.casestudy.transferservice.controllers;
 
 import com.rbs.casestudy.transferservice.models.Transaction;
+import com.rbs.casestudy.transferservice.models.TransferResponse;
 import com.rbs.casestudy.transferservice.repositories.TransactionRepository;
+import com.rbs.casestudy.transferservice.service.MoneyTransferService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,11 +12,12 @@ import java.util.List;
 public class TransactionController {
 
     private TransactionRepository transactionRepository;
+    private MoneyTransferService moneyTransferService;
 
-    public TransactionController(TransactionRepository transactionRepository) {
+    public TransactionController(TransactionRepository transactionRepository, MoneyTransferService moneyTransferService) {
         this.transactionRepository = transactionRepository;
+        this.moneyTransferService = moneyTransferService;
     }
-
 
     @GetMapping("/transactions")
     public List<Transaction> findAllTransactions() {
@@ -32,9 +35,10 @@ public class TransactionController {
     }
 
     @PostMapping("/transactions")
-    public Transaction performTransaction(@RequestBody Transaction transaction) { //TODO: validate
-        // TODO: perform the transaction
-        // TODO: display updated balances
-        return transactionRepository.save(transaction);
+    public TransferResponse performTransaction(@RequestBody Transaction transaction) { //TODO: validate
+        TransferResponse response = moneyTransferService.performTransaction(transaction);
+        Transaction persistedTransaction = transactionRepository.save(transaction);
+        response.setTransactionId(persistedTransaction.getId());
+        return response;
     }
 }

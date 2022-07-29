@@ -173,10 +173,16 @@ Example request:
 Example response (JSON):
 ```json
 {
-  "id": 3,
-  "sourceAccountNumber": 22222222,
-  "destinationAccountNumber": 33333333,
-  "amount": 100
+  "transactionId": 1,
+  "amount": 100,
+  "sourceAccount": {
+    "accountNumber": 22222222,
+    "balance": 23.45
+  },
+  "destinationAccount": {
+    "accountNumber": 33333333,
+    "balance": 150.00
+  }
 }
 ```
 Note: Update/Delete methods not allowed on transactions
