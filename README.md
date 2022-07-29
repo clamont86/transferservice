@@ -21,7 +21,8 @@ Accounts are simple objects with two properties:
 
 Upon startup, the application is automatically populated with several example accounts
 
-###Accounts
+### Accounts
+
 #### List all accounts
 Endpoint: ```/accounts```
 Method: ```GET```

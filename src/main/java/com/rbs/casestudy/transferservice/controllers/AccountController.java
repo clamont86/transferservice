@@ -39,11 +39,7 @@ public class AccountController {
         Account retrievedAccount = accountRepository.findById(accountNumber)
                 .orElseThrow(() -> new AccountNotFoundException(accountNumber));
         retrievedAccount.setBalance(account.getBalance());
-        try {
-            return accountRepository.save(account);
-        } catch (Exception e) {
-            throw e;
-        }
+        return accountRepository.save(account);
     }
 
     @DeleteMapping("/accounts/{accountNumber}")

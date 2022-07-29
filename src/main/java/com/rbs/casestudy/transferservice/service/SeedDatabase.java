@@ -1,7 +1,6 @@
 package com.rbs.casestudy.transferservice.service;
 
 import com.rbs.casestudy.transferservice.models.Account;
-import com.rbs.casestudy.transferservice.models.Transaction;
 import com.rbs.casestudy.transferservice.repositories.AccountRepository;
 import com.rbs.casestudy.transferservice.repositories.TransactionRepository;
 import org.springframework.boot.CommandLineRunner;

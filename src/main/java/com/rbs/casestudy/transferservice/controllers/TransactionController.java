@@ -12,8 +12,8 @@ import java.util.List;
 @RestController
 public class TransactionController {
 
-    private TransactionRepository transactionRepository;
-    private MoneyTransferService moneyTransferService;
+    private final TransactionRepository transactionRepository;
+    private final MoneyTransferService moneyTransferService;
 
     public TransactionController(TransactionRepository transactionRepository, MoneyTransferService moneyTransferService) {
         this.transactionRepository = transactionRepository;
