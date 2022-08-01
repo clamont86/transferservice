@@ -43,7 +43,7 @@ Example response (JSON):
     },
     {
         "accountNumber": 33333333,
-        "balance": -50.00
+        "balance": 50.00
     },
     {
         "accountNumber": 44444444,
@@ -51,7 +51,7 @@ Example response (JSON):
     },
     {
         "accountNumber": 55555555,
-        "balance": -85.65
+        "balance": 85.65
     }
 ]
 ```
